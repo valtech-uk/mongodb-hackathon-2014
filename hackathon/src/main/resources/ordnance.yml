@@ -1,0 +1,5 @@
+host: lon-c9-0.objectrocket.com
+port: 43035
+db: ordnance
+username: mongoukhack3
+password: mongo1
