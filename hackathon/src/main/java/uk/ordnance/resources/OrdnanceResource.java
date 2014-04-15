@@ -8,10 +8,12 @@ import com.codahale.metrics.annotation.Timed;
 import uk.ordnance.core.GenericResponse;
 import uk.ordnance.dao.OrdnanceDao;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+//Access-Control-Allow-Origin: *
 
 @Path("/ordnance")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +27,9 @@ public class OrdnanceResource {
 	private final OrdnanceConfiguration configuration;
 
 	private final OrdnanceDao ordnanceDao;
+
+	@Context
+	HttpServletResponse httpServletResponse;
 
 	public OrdnanceResource(final OrdnanceConfiguration configuration) {
 		this.configuration = configuration;
@@ -45,6 +50,8 @@ public class OrdnanceResource {
 	public GenericResponse findPostcode(final @PathParam("postcode") String postcode, final @QueryParam("max") Integer max) {
 		logger.info("Searching by postcode {}.", postcode);
 
+		httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+
 		final BasicDBObject query = new BasicDBObject();
 		query.put("POSTCODE_LOCATOR", postcode);
 
@@ -59,6 +66,8 @@ public class OrdnanceResource {
 	                                    final @QueryParam("tolerance") Integer tolerance,
 	                                    final @QueryParam("max") Integer max) {
 		logger.info("Searching by northing {} and easting {}.", northing, easting);
+
+		httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 
 		final int sanitisedTolerance = (tolerance != null && tolerance >= 0) ? tolerance : DEFAULT_TOLERANCE;
 

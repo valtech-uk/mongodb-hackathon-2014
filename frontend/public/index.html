@@ -1,20 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8"/>
 
-    <title>MongoDB Hackathon &ndash; OrdHack</title>
-    <meta name="description" content="MongoDB Hackathon, visualising location data fetched from MongoDB">
-    <meta name="author" content="Richard Martin">
+	<title>MongoDB Hackathon &ndash; OrdHack</title>
+	<meta name="description" content="MongoDB Hackathon, visualising location data fetched from MongoDB"/>
+	<meta name="author" content="Richard Martin"/>
 
-    <link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css"/>
+	<link rel="stylesheet" href="css/main.css"/>
 
-    <script src="js/api.js"></script>
+	<script src="http://code.jquery.com/jquery-2.1.0.js"></script>
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+	<script src="js/api.js"></script>
 </head>
 
 <body>
+
 <h1>OrdHack</h1>
 
-<p>Here!</p>
+<div id="map"></div>
+
+<form id="search" action="" method="get">
+	<label for="postcode">Postcode:</label>
+	<input id="postcode" type="text" name="postcode" value="EX4 6AB"/>
+
+	<input id="doSearch" type="submit" name="doSearch" value="Search"/>
+</form>
+
 </body>
 </html>
