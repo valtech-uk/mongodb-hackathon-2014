@@ -40,7 +40,7 @@ public class OrdnanceResource {
 	@GET
 	@Timed
 	public GenericResponse fetchTestData(final @QueryParam("max") Integer max) {
-		final List<DBObject> items = ordnanceDao.fetchData(POSTCODE_COLLECTION, max);
+		final List<DBObject> items = ordnanceDao.fetchData("BLPU", max);
 		return new GenericResponse(ordnanceDao.isNewConnection(), items);
 	}
 
@@ -53,9 +53,24 @@ public class OrdnanceResource {
 		httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 
 		final BasicDBObject query = new BasicDBObject();
-		query.put("POSTCODE_LOCATOR", postcode);
+		query.put("properties.POSTCODE_LOCATOR", postcode);
 
 		final List<DBObject> items = ordnanceDao.fetchData(POSTCODE_COLLECTION, query, max);
+		return new GenericResponse(ordnanceDao.isNewConnection(), items);
+	}
+
+	@Path("/sw/{postcode}")
+	@GET
+	@Timed
+	public GenericResponse findSWPostcode(final @PathParam("postcode") String postcode, final @QueryParam("max") Integer max) {
+		logger.info("Searching by South West postcode {}.", postcode);
+
+		httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+
+		final BasicDBObject query = new BasicDBObject();
+		query.put("POSTCODE_1", postcode);
+
+		final List<DBObject> items = ordnanceDao.fetchData("SouthWestGaz", query, max);
 		return new GenericResponse(ordnanceDao.isNewConnection(), items);
 	}
 
@@ -72,8 +87,8 @@ public class OrdnanceResource {
 		final int sanitisedTolerance = (tolerance != null && tolerance >= 0) ? tolerance : DEFAULT_TOLERANCE;
 
 		final BasicDBObject query = new BasicDBObject();
-		query.put("X_COORDINATE", new BasicDBObject("$gte", easting - sanitisedTolerance).append("$lte", easting + sanitisedTolerance));
-		query.put("Y_COORDINATE", new BasicDBObject("$gte", northing - sanitisedTolerance).append("$lte", northing + sanitisedTolerance));
+		query.put("properties.X_COORDINATE", new BasicDBObject("$gte", easting - sanitisedTolerance).append("$lte", easting + sanitisedTolerance));
+		query.put("properties.Y_COORDINATE", new BasicDBObject("$gte", northing - sanitisedTolerance).append("$lte", northing + sanitisedTolerance));
 
 		final List<DBObject> items = ordnanceDao.fetchData(POSTCODE_COLLECTION, query, max);
 		return new GenericResponse(ordnanceDao.isNewConnection(), items);

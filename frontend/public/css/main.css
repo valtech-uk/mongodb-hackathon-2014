@@ -24,3 +24,7 @@ h1 {
 #postcode {
 	width: 80px;
 }
+
+.osinfo .label {
+	font-weight: bold;
+}
